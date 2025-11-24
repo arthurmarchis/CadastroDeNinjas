@@ -6,14 +6,14 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("missoes")
 public class MissoesController {
 
-    @GetMapping("listar")
-    public String ListarMissoes(){
-        return "Listar missoes";
-    }
-
     @PostMapping("/criar")
     public String AdicionarMissoes(){
         return "Missao adicionada";
+    }
+
+    @GetMapping("listar")
+    public String ListarMissoes(){
+        return "Listar missoes";
     }
 
     @PutMapping("/alterar")
