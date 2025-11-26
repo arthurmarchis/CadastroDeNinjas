@@ -2,9 +2,16 @@ package santos.arthur.CadastroDeNinjas.Ninjas;
 
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("ninjas")
 public class NinjaController {
+    private NinjaService ninjaService;
+
+    public NinjaController(NinjaService ninjaService) {
+        this.ninjaService = ninjaService;
+    }
 
     @GetMapping("/boasvindas")
     public String boasVindas(){
@@ -18,13 +25,13 @@ public class NinjaController {
     }
     //Mostrar todos os Ninjas (READ)
     @GetMapping("/listar")
-    public String MostrarNinjas(){
-        return "Mostrar ninjas";
+    public List<NinjaModel> MostrarNinjas(){
+        return ninjaService.listarNinjas();
     }
     //Mostrar ninja por ID (READ)
     @GetMapping("/listarID")
-    public String MostrarNinjasPorID(){
-        return "Mostrar Ninjas por ID";
+    public List<NinjaModel> MostrarNinjasPorID(){
+        return ninjaService.listarNinjasPorId();
     }
     //Alterar dados dos Ninjas (UPDATE)
     @PutMapping("/alterar")
