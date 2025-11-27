@@ -7,22 +7,22 @@ import org.springframework.web.bind.annotation.*;
 public class MissoesController {
 
     @PostMapping("/criar")
-    public String AdicionarMissoes(){
+    public String adicionarMissoes(){
         return "Missao adicionada";
     }
 
     @GetMapping("listar")
-    public String ListarMissoes(){
+    public String listarMissoes(){
         return "Listar missoes";
     }
 
     @PutMapping("/alterar")
-    public String AlterarMissao(){
+    public String alterarMissao(){
         return "Alterar missao";
     }
 
     @DeleteMapping("/deletar")
-    public String DeletarMissao(){
+    public String deletarMissao(){
         return "Missao deletada";
     }
 
