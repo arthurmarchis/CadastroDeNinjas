@@ -1,5 +1,7 @@
 package santos.arthur.CadastroDeNinjas.Ninjas;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,31 +22,52 @@ public class NinjaController {
 
     //Adicionar Ninja (CREATE)]
     @PostMapping("/criar")
-    public NinjaDTO criarNinja(@RequestBody NinjaDTO ninja){
-        return ninjaService.criarNinja(ninja);
+    public ResponseEntity<String> criarNinja(@RequestBody NinjaDTO ninja){
+        NinjaDTO novoNinja = ninjaService.criarNinja(ninja);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Ninja Criado com sucesso: " + novoNinja.getNome() + " ID: " + novoNinja.getId());
     }
 
     //Mostrar todos os Ninjas (READ)
     @GetMapping("/listar")
-    public List<NinjaDTO> MostrarNinjas(){
-        return ninjaService.listarNinjas();
+    public ResponseEntity<List<NinjaDTO>> MostrarNinjas(){
+        List<NinjaDTO> ninjaDTOS = ninjaService.listarNinjas();
+        return ResponseEntity.ok(ninjaDTOS);
     }
 
     //Mostrar ninja por ID (READ)
     @GetMapping("/listar/{id}")
-    public NinjaDTO MostrarNinjasPorID(@PathVariable Long id){
-        return ninjaService.listarNinjasPorId(id);
+    public ResponseEntity<?> MostrarNinjasPorID(@PathVariable Long id){
+        if (ninjaService.listarNinjasPorId(id) != null) {
+            NinjaDTO ninjaDTO = ninjaService.listarNinjasPorId(id);
+            return ResponseEntity.ok(ninjaDTO);
+        } else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Ninja não encontrado.");
+        }
     }
+
 
     //Alterar dados dos Ninjas (UPDATE)
     @PutMapping("/alterar/{id}")
-    public NinjaDTO alterarDados(@PathVariable Long id, @RequestBody NinjaDTO ninjaAtualizado){
-        return ninjaService.atualizarNinja(id, ninjaAtualizado);
+    public ResponseEntity<?> alterarDados(@PathVariable Long id, @RequestBody NinjaDTO ninjaAtualizado){
+        NinjaDTO ninjaatualizado = ninjaService.atualizarNinja(id, ninjaAtualizado);
+        if (ninjaatualizado != null){
+            return ResponseEntity.ok(ninjaatualizado);
+        } else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Id nao encontrado");
+        }
+
     }
 
     //Deletar Ninja (DELETE)
     @DeleteMapping("/deletar/{id}")
-    public void deletarNinja(@PathVariable Long id){
-        ninjaService.deletarNinja(id);
+    public ResponseEntity<String> deletarNinja(@PathVariable Long id){
+        if (ninjaService.listarNinjasPorId(id) != null){
+            ninjaService.deletarNinja(id);
+            return ResponseEntity.ok("Ninja de ID: " + id +" Deletado com sucesso");
+        } else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("O ninja com id " +id+ " não foi encontrado.");
+        }
+
+
     }
 }
